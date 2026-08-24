@@ -8,19 +8,23 @@ let pomodoroTimeLeft = 25 * 60;
 let isDrawing = false;
 let canvas, ctx;
 
-// DISPARA TODAS AS FUNÇÕES COMPLEMENTARES AO ABRIR O SITE
 window.onload = function() {
     const savedTheme = localStorage.getItem('fisica_theme_pref') || 'claro';
-    document.getElementById('theme-selector').value = savedTheme;
-    changeTheme(savedTheme);
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    const themeSelector = document.getElementById('theme-selector');
+    if (themeSelector) themeSelector.value = savedTheme;
 
     const savedNotes = localStorage.getItem('fisica_markdown_notes') || '';
-    document.getElementById('markdown-input').value = savedNotes;
-    processAndSaveNotes();
+    const markdownInput = document.getElementById('markdown-input');
+    if (markdownInput) {
+        markdownInput.value = savedNotes;
+        processAndSaveNotes();
+    }
 
     const savedExamDate = localStorage.getItem('fisica_exam_date') || '';
-    if(savedExamDate) {
-        document.getElementById('exam-date-input').value = savedExamDate;
+    const examInput = document.getElementById('exam-date-input');
+    if (examInput) {
+        examInput.value = savedExamDate;
         calculateExamSchedule();
     }
 
@@ -35,8 +39,6 @@ window.onload = function() {
 // ==========================================
 // PARTE 2: CORE VISUAL, TEMAS E PRODUTIVIDADE
 // ==========================================
-
-// ALTERNA ENTRE AS ABAS DA PLATAFORMA
 function switchTab(sectionId, element) {
     document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active-section'));
     document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
@@ -45,30 +47,24 @@ function switchTab(sectionId, element) {
     if(sectionId === 'tools-sect') initWhiteboard();
 }
 
-// ATUALIZA A FOLHA DE ESTILO DE ACORDO COM O TEMA ESCOLHIDO
 function changeTheme(themeName) {
     document.documentElement.setAttribute('data-theme', themeName);
     localStorage.setItem('fisica_theme_pref', themeName);
 }
 
-// ABRE O FORMULÁRIO DE BOLSO FLUTUANTE
 function openFormulaModal() { document.getElementById('formula-modal').classList.add('open'); }
-
-// FECHA O FORMULÁRIO DE BOLSO AO CLICAR FORA OU NO BOTÃO X
 function closeFormulaModal(e, force = false) {
     if (force || e.target.classList.contains('modal-overlay') || e.target.classList.contains('close-modal-btn')) {
         document.getElementById('formula-modal').classList.remove('open');
     }
 }
 
-// FORMATA E EXIBE O CRONÔMETRO POMODORO
 function updatePomodoroDisplay() {
     let min = Math.floor(pomodoroTimeLeft / 60).toString().padStart(2, '0');
     let sec = (pomodoroTimeLeft % 60).toString().padStart(2, '0');
     document.getElementById('pomodoro-timer').innerText = `${min}:${sec}`;
 }
 
-// INICIA A CONTAGEM REGRESSIVA DO POMODORO
 function startPomodoro() {
     if (pomodoroInterval) return;
     document.getElementById('pomodoro-status').innerText = "Status: Focado!";
@@ -86,10 +82,7 @@ function startPomodoro() {
     }, 1000);
 }
 
-// PAUSA O CRONÔMETRO DO POMODORO
 function pausePomodoro() { clearInterval(pomodoroInterval); pomodoroInterval = null; document.getElementById('pomodoro-status').innerText = "Status: Pausado"; }
-
-// RESETA O POMODORO PARA OS 25 MINUTOS PADRÃO
 function resetPomodoro() { pausePomodoro(); pomodoroTimeLeft = 25 * 60; updatePomodoroDisplay(); document.getElementById('pomodoro-status').innerText = "Status: Pronto"; }
 
 // ==========================================
@@ -224,7 +217,6 @@ function generateChallengeLink() {
     const score = localStorage.getItem('fisica_last_score') || 0;
     window.open(`https://whatsapp.com{encodeURIComponent(`Fiz ${score * 10}% no simulado de Física! Te desafio a bater meu recorde: ${window.location.href}`)}`);
 }
-
 // ==========================================
 // PARTE 4: LABS, MATEMÁTICA E TEXT RENDERING
 // ==========================================
@@ -307,6 +299,7 @@ function initWhiteboard() {
     canvas.onmouseup = () => { isDrawing = false; };
 }
 
+// APAGA OS RISCOS DO CANVAS DE RASCUNHO
 function clearWhiteboard() { if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height); }
 
 function processAndSaveNotes() {
@@ -431,5 +424,5 @@ function calculateExamSchedule() {
     
     let diffDays = Math.ceil((new Date(dateVal + "T00:00:00") - new Date().setHours(0,0,0,0)) / (1000 * 60 * 60 * 24));
     const msgBox = document.getElementById('scheduler-message');
-    msgBox.innerHTML = diffDays < 0 ? `🏁 A data informada já passou!` : (diffDays === 0 ? `🚨 <strong>É hoje!</strong> Dia da prova de Física. Boa sorte!` : `⏳ Faltam <strong>${diffDays} dias</strong> para sua prova. <br>🎯 <strong>Meta:</strong> Faça 1 simulado hoje.`);
+    if(msgBox) msgBox.innerHTML = diffDays < 0 ? `🏁 A data informada já passou!` : (diffDays === 0 ? `🚨 <strong>É hoje!</strong> Dia da prova de Física. Boa sorte!` : `⏳ Faltam <strong>${diffDays} dias</strong> para sua prova. <br>🎯 <strong>Meta:</strong> Faça 1 simulado hoje.`);
 }
