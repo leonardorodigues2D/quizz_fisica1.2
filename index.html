@@ -4,26 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E-Learn | Física Hub Pro</title>
-    
-    <!-- Chamada das 5 Partes de Estilo Organizadas -->
-    <link rel="stylesheet" href="css/temas.css">
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/componentes.css">
-    <link rel="stylesheet" href="css/modulos.css">
-    <link rel="stylesheet" href="css/utilitarios.css">
 </head>
 <body>
 
     <div class="app-container">
-        <!-- BARRA LATERAL FIXA (SIDEBAR) -->
+        <!-- BARRA LATERAL (SIDEBAR) -->
         <aside class="sidebar">
             <div class="logo-area">
                 <span class="logo-icon">⚛️</span>
                 <h2>E-Learn Pro</h2>
                 <p>Mecânica & Hidráulica</p>
             </div>
-
-            <!-- CONTROLE DE TEMAS -->
             <div class="theme-control">
                 <label for="theme-selector">🎨 Tema:</label>
                 <select id="theme-selector" onchange="changeTheme(this.value)">
@@ -34,8 +25,6 @@
                     <option value="concurseiro">Tema Concurseiro</option>
                 </select>
             </div>
-
-            <!-- TIMER POMODORO -->
             <div class="pomodoro-box">
                 <h4>⏱️ Bloco Pomodoro</h4>
                 <div id="pomodoro-timer">25:00</div>
@@ -46,8 +35,6 @@
                 </div>
                 <span id="pomodoro-status">Status: Pronto</span>
             </div>
-
-            <!-- MENU DE NAVEGAÇÃO -->
             <nav class="nav-menu">
                 <button class="nav-btn active" onclick="switchTab('quiz-sect', this)">📝 Simulado & Desafios</button>
                 <button class="nav-btn" onclick="switchTab('escritas-sect', this)">✍️ Questões Escritas</button>
@@ -55,78 +42,113 @@
                 <button class="nav-btn" onclick="switchTab('tools-sect', this)">🧮 Lab & Calculadoras</button>
                 <button class="nav-btn" onclick="switchTab('notes-sect', this)">📝 Notas Markdown</button>
             </nav>
-
-            <!-- PAINEL DE RECORDES E HISTÓRICO LOCAL -->
             <div class="dashboard-stats">
                 <h3>🏆 Recorde Geral</h3>
                 <div class="stat-badge"><span id="best-score">0</span> / 10</div>
                 <h4>📊 Últimos 5 Simulados</h4>
                 <div class="history-table-wrapper">
                     <table class="history-table">
-                        <thead>
-                            <tr>
-                                <th>Data</th>
-                                <th>Nota</th>
-                            </tr>
-                        </thead>
-                        <tbody id="history-log">
-                            <tr><td colspan="2">Nenhum teste realizado</td></tr>
-                        </tbody>
+                        <thead><tr><th>Data</th><th>Nota</th></tr></thead>
+                        <tbody id="history-log"><tr><td colspan="2">Nenhum teste realizado</td></tr></tbody>
                     </table>
                 </div>
             </div>
         </aside>
 
-        <!-- PAINEL CENTRAL (ONDE OS COMPONENTES HTML COMPLEMENTARES SÃO INJETADOS) -->
+        <!-- PAINEL CENTRAL DE CONTEÚDO -->
         <main class="main-content">
-            <section id="quiz-sect" class="section active-section"></section>
-            <section id="escritas-sect" class="section"></section>
-            <section id="flashcards-sect" class="section"></section>
-            <section id="tools-sect" class="section"></section>
-            <section id="notes-sect" class="section"></section>
+            <section id="quiz-sect" class="section active-section">
+                <div class="section-header"><h2>Central de Testes Inteligentes</h2><p>Configure filtros por aula ou dispute com amigos localmente.</p></div>
+                <div class="card-panel scheduler-card" style="margin-bottom: 20px;">
+                    <h4>📅 Planejador de Estudos</h4>
+                    <div class="scheduler-inputs"><label>Data da prova:</label><input type="date" id="exam-date-input" onchange="calculateExamSchedule()"></div>
+                    <div id="scheduler-message" class="scheduler-msg">Configure a data da prova para receber sua meta.</div>
+                </div>
+                <div class="card-panel setup-quiz-card">
+                    <h3>⚙️ Parâmetros do Teste</h3>
+                    <div class="control-group">
+                        <label>📂 Escopo das Questões:</label>
+                        <select id="quiz-filter">
+                            <option value="todos">Simulado Geral (Todas as aulas)</option>
+                            <option value="aula30">Apenas Aula 30 (Trabalho Mecânico I)</option>
+                            <option value="aula32">Apenas Aula 32 (Potência Mecânica)</option>
+                            <option value="aula33">Apenas Aula 33 (Rendimento)</option>
+                            <option value="aula34">Apenas Aula 34 (Sistemas Hidráulicos)</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label>🎮 Modalidade:</label>
+                        <select id="quiz-mode" onchange="toggleMultiplayerSetup()">
+                            <option value="single">Modo Individual</option>
+                            <option value="multi">Modo Competição Local (Pass the Phone)</option>
+                        </select>
+                    </div>
+                    <div id="multiplayer-names" class="control-group" style="display:none; margin-top:10px;">
+                        <input type="text" id="player1-name" value="Jogador 1"><input type="text" id="player2-name" value="Jogador 2">
+                    </div>
+                    <button class="action-btn btn-success" style="margin-top:15px; width:100%;" onclick="startQuiz()">⚡ Iniciar Simulado</button>
+                </div>
+                <div id="quiz-game" class="card-panel" style="display:none; margin-top:20px;">
+                    <div id="multiplayer-turn-indicator" class="multi-indicator" style="display:none;"></div>
+                    <div id="questions-area"></div>
+                    <div class="action-bar"><button class="action-btn btn-primary" onclick="correctQuiz()">Submeter Respostas</button></div>
+                    <div id="quiz-results" class="results-box" style="display:none;"></div>
+                    <div id="challenge-share-zone" style="display:none; margin-top:15px; text-align:center;"><button class="gabarito-btn" onclick="generateChallengeLink()">🔗 Desafiar no WhatsApp</button></div>
+                </div>
+            </section>
+
+            <section id="escritas-sect" class="section">
+                <div class="section-header"><h2>Questões Dissertativas</h2><p>Treine conceitos analíticos com correção sugerida.</p></div>
+                <div id="escritas-area"></div>
+            </section>
+
+            <section id="flashcards-sect" class="section">
+                <div class="section-header"><h2>Flashcards Inteligentes</h2><p>Classifique cartões e force repetições espaçadas.</p></div>
+                <div class="flashcards-grid" id="flashcards-area"></div>
+            </section>
+
+            <section id="tools-sect" class="section">
+                <div class="section-header"><h2>Laboratório Matemático e Lousa</h2><p>Calcule fórmulas passo a passo e rascunhe vetores.</p></div>
+                <div class="card-panel tool-card" style="margin-bottom: 20px;">
+                    <h3>📐 Conversor Automático (SI)</h3>
+                    <div class="converter-grid">
+                        <div class="conv-col"><label>Velocidade (km/h para m/s):</label><input type="number" id="input-kmh" oninput="convertUnits('kmh')"><span id="res-kmh" class="conv-res">= 0 m/s</span></div>
+                        <div class="conv-col"><label>Tempo (Minutos para Segundos):</label><input type="number" id="input-min" oninput="convertUnits('min')"><span id="res-min" class="conv-res">= 0 s</span></div>
+                        <div class="conv-col"><label>Área (cm² para m²):</label><input type="number" id="input-cm2" oninput="convertUnits('cm2')"><span id="res-cm2" class="conv-res">= 0 m²</span></div>
+                    </div>
+                </div>
+                <div class="card-panel tool-card" style="margin-bottom: 20px;">
+                    <h3>🧮 Resolutor com Passo a Passo</h3>
+                    <div class="calc-selector">
+                        <select id="calc-formula-select" onchange="toggleCalcFields()">
+                            <option value="trabalho">Trabalho Mecânico (W = F · d · cos θ)</option>
+                            <option value="potencia">Potência Mecânica (P = W / Δt)</option>
+                            <option value="hidraulica">Prensa Hidráulica (Descobrir F2)</option>
+                        </select>
+                    </div>
+                    <div id="calc-inputs-fields" class="calc-inputs"></div>
+                    <button class="action-btn btn-primary" onclick="executeStepByStepCalculation()">Calcular com Demonstração</button>
+                    <div id="calc-step-result" class="resposta-esperada" style="margin-top:15px;"></div>
+                </div>
+                <div class="card-panel tool-card">
+                    <h3>✏️ Lousa Digital de Vetores</h3>
+                    <div class="canvas-container"><canvas id="whiteboard" width="650" height="250"></canvas></div>
+                    <button class="gabarito-btn" style="margin-top:10px; background:var(--danger); color:white; border:none;" onclick="clearWhiteboard()">Limpar Lousa</button>
+                </div>
+            </section>
+
+            <section id="notes-sect" class="section">
+                <div class="section-header"><h2>Bloco de Notas</h2><p>Crie seus resumos utilizando formatação Markdown.</p></div>
+                <div class="card-panel markdown-engine">
+                    <div class="editor-split">
+                        <div class="editor-col"><textarea id="markdown-input" oninput="processAndSaveNotes()"></textarea></div>
+                        <div class="editor-col"><div id="markdown-preview" class="markdown-preview-box"></div></div>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 
-    <!-- COMPONENTE FLUTUANTE DE FORMULÁRIO -->
     <button class="floating-formula-btn" onclick="openFormulaModal()">📋 Fórmulas</button>
-    
-    <!-- POPUP MODAL (FORMULÁRIO DE POCKET) -->
     <div id="formula-modal" class="modal-overlay" onclick="closeFormulaModal(event)">
         <div class="modal-content">
-            <div class="modal-header">
-                <h3>📋 Formulário de Pocket</h3>
-                <button class="close-modal-btn" onclick="closeFormulaModal(event, true)">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="modal-topic">
-                    <h4>Trabalho Mecânico</h4>
-                    <code>W = F · d · cos(θ)</code>
-                </div>
-                <div class="modal-topic">
-                    <h4>Potência Mecânica</h4>
-                    <code>W_peso = m · g · h</code>
-                </div>
-                <div class="modal-topic">
-                    <h4>Rendimento</h4>
-                    <code>η = P_útil / P_total</code>
-                </div>
-                <div class="modal-topic">
-                    <h4>Prensa Hidráulica</h4>
-                    <code>F1 / A1 = F2 / A2</code>
-                </div>
-            </div>
-        </div>
-    </div>
-
-        <!-- BANCOS DE DADOS -->
-    <script src="js/aula30.js"></script>
-    <script src="js/aula31.js"></script>
-    <script src="js/aula32.js"></script>
-    <script src="js/aula33.js"></script>
-    <script src="js/aula34.js"></script>
-    <script src="js/unificador.js"></script>
-    
-    <!-- CONTROLADORES LÓGICOS PRINCIPAIS -->
-    <script src="js/app.js"></script>
-</body>
-</html>
