@@ -1,91 +1,135 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="claro">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-Learn | Física Avançada</title>
-    <link rel="stylesheet" href="style.css">
+    <title>E-Learn | Física Hub Pro</title>
+    
+    <!-- Chamada das 5 Partes de Estilo Organizadas -->
+    <link rel="stylesheet" href="css/temas.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/componentes.css">
+    <link rel="stylesheet" href="css/modulos.css">
+    <link rel="stylesheet" href="css/utilitarios.css">
 </head>
 <body>
 
     <div class="app-container">
+        <!-- BARRA LATERAL FIXA (SIDEBAR) -->
         <aside class="sidebar">
             <div class="logo-area">
                 <span class="logo-icon">⚛️</span>
-                <h2>E-Learn</h2>
+                <h2>E-Learn Pro</h2>
                 <p>Mecânica & Hidráulica</p>
             </div>
-            <nav class="nav-menu">
-                <button class="nav-btn active" onclick="switchTab('quiz-sect', this)">
-                    <span class="btn-icon">📝</span> Múltipla Escolha
-                </button>
-                <button class="nav-btn" onclick="switchTab('escritas-sect', this)">
-                    <span class="btn-icon">✍️</span> Perguntas Escritas
-                </button>
-                <button class="nav-btn" onclick="switchTab('flashcards-sect', this)">
-                    <span class="btn-icon">🎴</span> Flashcards
-                </button>
-            </nav>
-            <div class="dashboard-stats">
-                <h3>🏆 Seu Recorde</h3>
-                <div class="stat-badge">
-                    <span id="best-score">0</span> / 10 acertos
+
+            <!-- CONTROLE DE TEMAS -->
+            <div class="theme-control">
+                <label for="theme-selector">🎨 Tema:</label>
+                <select id="theme-selector" onchange="changeTheme(this.value)">
+                    <option value="claro">Modo Claro</option>
+                    <option value="escuro">Modo Escuro</option>
+                    <option value="dracula">Tema Drácula</option>
+                    <option value="cyberpunk">Tema Cyberpunk</option>
+                    <option value="concurseiro">Tema Concurseiro</option>
+                </select>
+            </div>
+
+            <!-- TIMER POMODORO -->
+            <div class="pomodoro-box">
+                <h4>⏱️ Bloco Pomodoro</h4>
+                <div id="pomodoro-timer">25:00</div>
+                <div class="pomodoro-controls">
+                    <button onclick="startPomodoro()">Iniciar</button>
+                    <button onclick="pausePomodoro()">Pausar</button>
+                    <button onclick="resetPomodoro()">Resetar</button>
                 </div>
-                <p class="stat-meta">Salvo localmente</p>
+                <span id="pomodoro-status">Status: Pronto</span>
+            </div>
+
+            <!-- MENU DE NAVEGAÇÃO -->
+            <nav class="nav-menu">
+                <button class="nav-btn active" onclick="switchTab('quiz-sect', this)">📝 Simulado & Desafios</button>
+                <button class="nav-btn" onclick="switchTab('escritas-sect', this)">✍️ Questões Escritas</button>
+                <button class="nav-btn" onclick="switchTab('flashcards-sect', this)">🎴 Flashcards (Espaçados)</button>
+                <button class="nav-btn" onclick="switchTab('tools-sect', this)">🧮 Lab & Calculadoras</button>
+                <button class="nav-btn" onclick="switchTab('notes-sect', this)">📝 Notas Markdown</button>
+            </nav>
+
+            <!-- PAINEL DE RECORDES E HISTÓRICO LOCAL -->
+            <div class="dashboard-stats">
+                <h3>🏆 Recorde Geral</h3>
+                <div class="stat-badge"><span id="best-score">0</span> / 10</div>
+                <h4>📊 Últimos 5 Simulados</h4>
+                <div class="history-table-wrapper">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Nota</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-log">
+                            <tr><td colspan="2">Nenhum teste realizado</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </aside>
 
+        <!-- PAINEL CENTRAL (ONDE OS COMPONENTES HTML COMPLEMENTARES SÃO INJETADOS) -->
         <main class="main-content">
-            <!-- ABA 1: QUIZ MÚLTIPLA ESCOLHA -->
-            <section id="quiz-sect" class="section active-section">
-                <div class="section-header">
-                    <h2>Simulado Dinâmico</h2>
-                    <p>O sistema seleciona aleatoriamente 10 perguntas do banco de dados oficial (Aulas 30 a 34).</p>
-                </div>
-                
-                <div id="quiz-init" class="card-panel start-panel">
-                    <div class="panel-icon">🚀</div>
-                    <h3>Pronto para testar seus conhecimentos?</h3>
-                    <p>O simulado possui tempo livre e correção detalhada item por item ao finalizar.</p>
-                    <button class="action-btn btn-success" onclick="startQuiz()">Gerar Novo Simulado</button>
-                </div>
-
-                <div id="quiz-game" style="display:none;">
-                    <div id="questions-area"></div>
-                    <div class="action-bar">
-                        <button class="action-btn btn-primary" onclick="correctQuiz()">Enviar e Corrigir Respostas</button>
-                    </div>
-                    <div id="quiz-results" class="results-box" style="display:none;"></div>
-                </div>
-            </section>
-
-            <!-- ABA 2: PERGUNTAS ESCRITAS -->
-            <section id="escritas-sect" class="section">
-                <div class="section-header">
-                    <h2>Questões Dissertativas</h2>
-                    <p>Treine a formulação de conceitos e respostas estruturadas para avaliações discursivas.</p>
-                </div>
-                <div id="escritas-area"></div>
-            </section>
-
-            <!-- ABA 3: FLASHCARDS -->
-            <section id="flashcards-sect" class="section">
-                <div class="section-header">
-                    <h2>Flashcards Interativos</h2>
-                    <p>Clique sobre os cartões para rotacionar em 3D e memorizar fórmulas fundamentais.</p>
-                </div>
-                <div class="flashcards-grid" id="flashcards-area"></div>
-            </section>
+            <section id="quiz-sect" class="section active-section"></section>
+            <section id="escritas-sect" class="section"></section>
+            <section id="flashcards-sect" class="section"></section>
+            <section id="tools-sect" class="section"></section>
+            <section id="notes-sect" class="section"></section>
         </main>
     </div>
 
-    <!-- Chamada dos Módulos Separados dentro da pasta js -->
+    <!-- COMPONENTE FLUTUANTE DE FORMULÁRIO -->
+    <button class="floating-formula-btn" onclick="openFormulaModal()">📋 Fórmulas</button>
+    
+    <!-- POPUP MODAL (FORMULÁRIO DE POCKET) -->
+    <div id="formula-modal" class="modal-overlay" onclick="closeFormulaModal(event)">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📋 Formulário de Pocket</h3>
+                <button class="close-modal-btn" onclick="closeFormulaModal(event, true)">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-topic">
+                    <h4>Trabalho Mecânico</h4>
+                    <code>W = F · d · cos(θ)</code>
+                </div>
+                <div class="modal-topic">
+                    <h4>Potência Mecânica</h4>
+                    <code>W_peso = m · g · h</code>
+                </div>
+                <div class="modal-topic">
+                    <h4>Rendimento</h4>
+                    <code>η = P_útil / P_total</code>
+                </div>
+                <div class="modal-topic">
+                    <h4>Prensa Hidráulica</h4>
+                    <code>F1 / A1 = F2 / A2</code>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CARREGAMENTO DOS MÓDULOS DE BANCO DE DADOS -->
     <script src="js/aula30.js"></script>
     <script src="js/aula31.js"></script>
     <script src="js/aula32.js"></script>
     <script src="js/aula33.js"></script>
     <script src="js/aula34.js"></script>
     <script src="js/unificador.js"></script>
+    
+    <!-- CARREGAMENTO DOS SCRIPTS LÓGICOS COMPLEMENTARES -->
+    <script src="js/interface.js"></script>
+    <script src="js/ferramentas.js"></script>
+    <script src="js/quiz.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>
