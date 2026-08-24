@@ -1,0 +1,410 @@
+:root {
+    --bg-app: #f8fafc;
+    --bg-card: #ffffff;
+    --sidebar-color: #0f172a;
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --success: #10b981;
+    --danger: #ef4444;
+    --text-main: #334155;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --radius-lg: 12px;
+    --radius-md: 8px;
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+    background-color: var(--bg-app);
+    color: var(--text-main);
+    overflow-x: hidden;
+}
+
+.app-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar Estilo Dashboard */
+.sidebar {
+    width: 280px;
+    background-color: var(--sidebar-color);
+    color: white;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+}
+
+.logo-area {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.logo-icon {
+    font-size: 40px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.logo-area h2 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.logo-area p {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-grow: 1;
+}
+
+.nav-btn {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    padding: 14px 16px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-btn:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.nav-btn.active {
+    background: var(--primary);
+    color: white;
+}
+
+.dashboard-stats {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 20px;
+    border-radius: var(--radius-lg);
+    text-align: center;
+}
+
+.dashboard-stats h3 {
+    font-size: 14px;
+    color: #94a3b8;
+    margin-bottom: 10px;
+}
+
+.stat-badge {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--success);
+    margin-bottom: 4px;
+}
+
+.stat-meta {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+/* Área de Conteúdo Principal */
+.main-content {
+    margin-left: 280px;
+    flex-grow: 1;
+    padding: 40px;
+    max-width: 1000px;
+}
+
+.section {
+    display: none;
+}
+
+.section.active-section {
+    display: block;
+    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.section-header {
+    margin-bottom: 30px;
+}
+
+.section-header h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #1e293b;
+    letter-spacing: -0.5px;
+}
+
+.section-header p {
+    color: var(--text-muted);
+    margin-top: 6px;
+    font-size: 15px;
+}
+
+/* Painéis e Cards */
+.card-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 30px;
+    box-shadow: var(--shadow);
+}
+
+.start-panel {
+    text-align: center;
+    padding: 60px 40px;
+}
+
+.panel-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.start-panel h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.start-panel p {
+    color: var(--text-muted);
+    margin-bottom: 24px;
+}
+
+/* Botões Profissionais */
+.action-btn {
+    padding: 12px 28px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-success { background: var(--success); color: white; }
+.btn-success:hover { background: #059669; transform: translateY(-1px); }
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover { background: var(--primary-hover); }
+
+/* Listagem de Quiz */
+.quiz-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+}
+
+.question-text {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 18px;
+}
+
+.options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.option-label {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-size: 15px;
+}
+
+.option-label:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+.option-label input {
+    margin-right: 14px;
+    transform: scale(1.2);
+    accent-color: var(--primary);
+}
+
+/* Perguntas Escritas */
+.escrita-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+}
+
+.escrita-item h3 {
+    font-size: 16px;
+    margin-bottom: 12px;
+    color: #1e293b;
+}
+
+.escrita-item textarea {
+    width: 100%;
+    height: 100px;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    resize: vertical;
+    margin-bottom: 14px;
+    font-size: 14px;
+    outline: none;
+}
+
+.escrita-item textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.gabarito-btn {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.gabarito-btn:hover { background: #e2e8f0; }
+
+.resposta-esperada {
+    display: none;
+    margin-top: 14px;
+    padding: 16px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: var(--radius-md);
+    color: #166534;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Grid de Flashcards */
+.flashcards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.card-scene {
+    height: 200px;
+    perspective: 1000px;
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+}
+
+.card.is-flipped {
+    transform: rotateY(180deg);
+}
+
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 24px;
+    border-radius: var(--radius-lg);
+}
+
+.card-front {
+    background: linear-gradient(135deg, #1e3a8a, #2563eb);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.card-back {
+    background: var(--bg-card);
+    color: var(--text-main);
+    transform: rotateY(180deg);
+    border: 2px solid var(--primary);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Modificadores de Estado (Feedback do Simulado) */
+.correct-answer {
+    background-color: #ecfdf5 !important;
+    border-color: #10b981 !important;
+    color: #065f46 !important;
+}
+
+.wrong-answer {
+    background-color: #fef2f2 !important;
+    border-color: #ef4444 !important;
+    color: #991b1b !important;
+}
+
+.results-box {
+    margin-top: 30px;
+    padding: 24px;
+    background: #f1f5f9;
+    border-radius: var(--radius-lg);
+    text-align: center;
+    border: 1px solid var(--border);
+}
+
+.action-bar {
+    margin-top: 20px;
+}
+
+/* Responsividade Mobile */
+@media (max-width: 768px) {
+    .app-container { flex-direction: column; }
+    .sidebar { width: 100%; height: auto; position: relative; padding: 20px; }
+    .main-content { margin-left: 0; padding: 20px; }
+    .nav-menu { flex-direction: row; overflow-x: auto; padding-bottom: 5px; }
+    .nav-btn { white-space: nowrap; }
+    .dashboard-stats { margin-top: 15px; }
+}

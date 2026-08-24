@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Learn | Física Avançada</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo-area">
+                <span class="logo-icon">⚛️</span>
+                <h2>E-Learn</h2>
+                <p>Mecânica & Hidráulica</p>
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-btn active" onclick="switchTab('quiz-sect', this)">
+                    <span class="btn-icon">📝</span> Múltipla Escolha
+                </button>
+                <button class="nav-btn" onclick="switchTab('escritas-sect', this)">
+                    <span class="btn-icon">✍️</span> Perguntas Escritas
+                </button>
+                <button class="nav-btn" onclick="switchTab('flashcards-sect', this)">
+                    <span class="btn-icon">🎴</span> Flashcards
+                </button>
+            </nav>
+            <div class="dashboard-stats">
+                <h3>🏆 Seu Recorde</h3>
+                <div class="stat-badge">
+                    <span id="best-score">0</span> / 10 acertos
+                </div>
+                <p class="stat-meta">Salvo localmente</p>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <!-- ABA 1: QUIZ MÚLTIPLA ESCOLHA -->
+            <section id="quiz-sect" class="section active-section">
+                <div class="section-header">
+                    <h2>Simulado Dinâmico</h2>
+                    <p>O sistema seleciona aleatoriamente 10 perguntas do banco de dados oficial (Aulas 30 a 34).</p>
+                </div>
+                
+                <div id="quiz-init" class="card-panel start-panel">
+                    <div class="panel-icon">🚀</div>
+                    <h3>Pronto para testar seus conhecimentos?</h3>
+                    <p>O simulado possui tempo livre e correção detalhada item por item ao finalizar.</p>
+                    <button class="action-btn btn-success" onclick="startQuiz()">Gerar Novo Simulado</button>
+                </div>
+
+                <div id="quiz-game" style="display:none;">
+                    <div id="questions-area"></div>
+                    <div class="action-bar">
+                        <button class="action-btn btn-primary" onclick="correctQuiz()">Enviar e Corrigir Respostas</button>
+                    </div>
+                    <div id="quiz-results" class="results-box" style="display:none;"></div>
+                </div>
+            </section>
+
+            <!-- ABA 2: PERGUNTAS ESCRITAS -->
+            <section id="escritas-sect" class="section">
+                <div class="section-header">
+                    <h2>Questões Dissertativas</h2>
+                    <p>Treine a formulação de conceitos e respostas estruturadas para avaliações discursivas.</p>
+                </div>
+                <div id="escritas-area"></div>
+            </section>
+
+            <!-- ABA 3: FLASHCARDS -->
+            <section id="flashcards-sect" class="section">
+                <div class="section-header">
+                    <h2>Flashcards Interativos</h2>
+                    <p>Clique sobre os cartões para rotacionar em 3D e memorizar fórmulas fundamentais.</p>
+                </div>
+                <div class="flashcards-grid" id="flashcards-area"></div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Chamada dos Módulos Separados dentro da pasta js -->
+    <script src="js/aula30.js"></script>
+    <script src="js/aula31.js"></script>
+    <script src="js/aula32.js"></script>
+    <script src="js/aula33.js"></script>
+    <script src="js/aula34.js"></script>
+    <script src="js/unificador.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
