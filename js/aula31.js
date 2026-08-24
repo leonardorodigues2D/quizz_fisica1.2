@@ -1,4 +1,3 @@
-// Questões dissertativas integradas das aulas de Trabalho
 const perguntasEscritas = [
     { q: "1. Sob quais condições físicas uma força constante aplicada sobre um objeto realiza um trabalho igual a ZERO?", resp: "GABARITO: O trabalho é zero se não houver deslocamento do corpo (d = 0) ou se a força aplicada for perpendicular à direção do movimento (ângulo de 90° em relação ao deslocamento, fazendo com que o cos(90°) seja zero)." },
     { q: "2. Explique a diferença física prática entre os conceitos de Trabalho Mecânico e Potência Mecânica.", resp: "GABARITO: O Trabalho mede a quantidade de energia transferida para mover um corpo por uma distância. A Potência mede a rapidez com que essa energia é transferida, ou seja, quanto menor o tempo para realizar o mesmo trabalho, maior será a potência do sistema." },
